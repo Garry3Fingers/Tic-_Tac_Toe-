@@ -30,6 +30,19 @@ module Game
     gets.chomp
   end
 
+  def self.sign
+    sign = Game.input
+    if defined?(FIRST_PLAYER) == 'constant' && FIRST_PLAYER.sign == sign || sign.match?(/[[:digit:]]/)\
+      || sign.length > 1
+      raise InvalidInput, 'Invalid input. Use a different letter!'
+    end
+  rescue InvalidInput => e
+    puts e
+    retry
+  else
+    sign
+  end
+
   def self.create_player
     if defined?(FIRST_PLAYER) == 'constant'
       puts 'Enter the second player name'
@@ -46,21 +59,9 @@ module Game
       puts 'Enter a letter for the first player\'s sign'
     end
 
-    loop do
-      begin
-        sign = Game.input
+    sign = Game.sign
 
-        if defined?(FIRST_PLAYER) == 'constant' && FIRST_PLAYER.sign == sign || sign.match?(/[[:digit:]]/)\
-          || sign.length > 1
-          raise InvalidInput, 'Invalid input. Use a different letter!'
-        end
-      rescue InvalidInput => e
-        puts e
-        retry
-      else
-        return Player.new(name, sign)
-      end
-    end
+    Player.new(name, sign)
   end
 end
 
