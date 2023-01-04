@@ -25,15 +25,15 @@ end
 
 class InvalidInput < StandardError; end
 
-module Game
+module CreatePlayer
   def self.input
     gets.chomp
   end
 
   def self.set_sign
-    sign = Game.input
+    sign = CreatePlayer.input
     if defined?(FIRST_PLAYER) == 'constant' && FIRST_PLAYER.sign == sign || sign.match?(/[[:digit:]]/)\
-      || sign.length > 1
+      || sign.length > 1 || sign.match?(/\W+/)
       raise InvalidInput, 'Invalid input. Use a different letter!'
     end
   rescue InvalidInput => e
@@ -43,34 +43,38 @@ module Game
     sign
   end
 
+  def self.ask_name
+    if defined?(FIRST_PLAYER) == 'constant'
+      'Enter the second player name'
+    else
+      'Enter the first player name'
+    end
+  end
+
   def self.ask_sign
     if defined?(FIRST_PLAYER) == 'constant'
-      print "Enter a letter for the second player\'s sign\n"\
+      "Enter a letter for the second player\'s sign\n"\
       "It mustn't be #{FIRST_PLAYER.sign}"
     else
-      print 'Enter a letter for the first player\'s sign'
+      'Enter a letter for the first player\'s sign'
     end
   end
 
   def self.create_player
-    if defined?(FIRST_PLAYER) == 'constant'
-      puts 'Enter the second player name'
-    else
-      puts 'Enter the first player name'
-    end
+    puts CreatePlayer.ask_name
 
-    name = Game.input
+    name = CreatePlayer.input
 
-    puts Game.ask_sign
+    puts CreatePlayer.ask_sign
 
-    sign = Game.set_sign
+    sign = CreatePlayer.set_sign
 
     Player.new(name, sign)
   end
 end
 
-puts FIRST_PLAYER = Game.create_player
-puts SECOND_PLAYER = Game.create_player
+puts FIRST_PLAYER = CreatePlayer.create_player
+puts SECOND_PLAYER = CreatePlayer.create_player
 
 board = Board.new
 puts board
