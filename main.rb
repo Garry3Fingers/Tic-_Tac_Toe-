@@ -25,6 +25,7 @@ end
 
 class InvalidInput < StandardError; end
 
+# This module creates new players
 module CreatePlayer
   def self.input
     gets.chomp
@@ -71,10 +72,13 @@ module CreatePlayer
 
     Player.new(name, sign)
   end
+
+  FIRST_PLAYER = CreatePlayer.create_player
+  SECOND_PLAYER = CreatePlayer.create_player
 end
 
-puts FIRST_PLAYER = CreatePlayer.create_player
-puts SECOND_PLAYER = CreatePlayer.create_player
+puts  CreatePlayer::FIRST_PLAYER
+puts  CreatePlayer::SECOND_PLAYER
 
 board = Board.new
 puts board
