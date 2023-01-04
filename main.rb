@@ -19,15 +19,19 @@ class Player
   end
 
   def to_s
-    if defined?(FIRST_PLAYER) == 'constant'
-      "Second player: #{name}, sign: #{sign}."
-    else
-      "First player: #{name}, sign: #{sign}."
-    end
+    "Player: #{name}, sign: #{sign}."
+  end
+
+  def make_move
+
   end
 end
 
 class InvalidInput < StandardError; end
+
+module PlayGame
+
+end
 
 # This module creates new players
 module CreatePlayer
