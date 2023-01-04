@@ -1,12 +1,30 @@
 class Board
-  attr_accessor :board
+  attr_reader :board
+  attr_accessor :move_board
 
   def initialize
     @board = [[1, '|', 2, '|', 3], [4, '|', 5, '|', 6], [7, '|', 8, '|', 9]]
+    @move_board = board.map(&:clone)
   end
 
   def to_s
     "#{board.first.join}\n#{board[1].join}\n#{board.last.join}"
+  end
+
+  def process_player_move(player_sign, move)
+   # move_board = board.map(&:clone)
+
+    move_board.map! do |arr|
+      if arr.include?(move)
+        index = arr.find_index(move)
+        arr[index] = player_sign
+        arr
+      else
+        arr
+      end
+    end
+
+    puts "#{move_board.first.join}\n#{move_board[1].join}\n#{move_board.last.join}"
   end
 end
 
@@ -23,14 +41,29 @@ class Player
   end
 
   def make_move
-
+    input = gets.chomp
+    unless input.match?(/[[:digit:]]/)
+      raise InvalidInput, 'Invalid input. Use a different number!'
+    end
+  rescue InvalidInput => e
+    puts e
+    retry
+  else
+    input.to_i
   end
 end
 
 class InvalidInput < StandardError; end
 
 module PlayGame
+  BOARD = Board.new
 
+  def self.play_round
+    puts "#{CreatePlayer::FIRST_PLAYER.name} make your move!"
+    BOARD.process_player_move(CreatePlayer::FIRST_PLAYER.sign, CreatePlayer::FIRST_PLAYER.make_move)
+    puts "#{CreatePlayer::SECOND_PLAYER.name} make your move!"
+    BOARD.process_player_move(CreatePlayer::SECOND_PLAYER.sign, CreatePlayer::SECOND_PLAYER.make_move)
+  end
 end
 
 # This module creates new players
@@ -88,5 +121,8 @@ end
 puts  CreatePlayer::FIRST_PLAYER
 puts  CreatePlayer::SECOND_PLAYER
 
-board = Board.new
-puts board
+puts PlayGame::BOARD
+
+# puts  CreatePlayer::FIRST_PLAYER.sign
+# puts  CreatePlayer::SECOND_PLAYER.sign
+PlayGame.play_round
