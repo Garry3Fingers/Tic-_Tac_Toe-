@@ -11,7 +11,7 @@ class Board
 end
 
 class Player
-  attr_accessor :name, :sign
+  attr_reader :name, :sign
 
   def initialize(name, sign)
     @name = name
@@ -19,7 +19,11 @@ class Player
   end
 
   def to_s
-    "name: #{name} sign: #{sign}"
+    if defined?(FIRST_PLAYER) == 'constant'
+      "Second player: #{name}, sign: #{sign}."
+    else
+      "First player: #{name}, sign: #{sign}."
+    end
   end
 end
 
