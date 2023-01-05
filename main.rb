@@ -62,13 +62,17 @@ module PlayGame
     BOARD.process_player_move(CreatePlayer::SECOND_PLAYER.sign, CreatePlayer::SECOND_PLAYER.make_move)
   end
 
+  def self.check_left_moves
+    BOARD.move_board.any? { |arr| arr.any?(Integer) } == false
+  end
+
   def self.play_game
     loop do
       PlayGame.first_player_move
-      break if BOARD.move_board.any? { |arr| arr.any?(Integer) } == false
+      break if PlayGame.check_left_moves
 
       PlayGame.second_player_move
-      break if BOARD.move_board.any? { |arr| arr.any?(Integer) } == false
+      break if PlayGame.check_left_moves
     end
     puts 'It\'s a draw!'
   end
