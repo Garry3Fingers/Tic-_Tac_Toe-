@@ -17,6 +17,7 @@ class Board
       arr[index] = player_sign if arr.include?(move)
       arr
     end
+    puts self
   end
 end
 
@@ -47,16 +48,29 @@ end
 
 class InvalidInput < StandardError; end
 
+# This module implements game rounds
 module PlayGame
   BOARD = Board.new
 
-  def self.play_round
+  def self.first_player_move
     puts "#{CreatePlayer::FIRST_PLAYER.name} make your move!"
     BOARD.process_player_move(CreatePlayer::FIRST_PLAYER.sign, CreatePlayer::FIRST_PLAYER.make_move)
-    puts BOARD
+  end
+
+  def self.second_player_move
     puts "#{CreatePlayer::SECOND_PLAYER.name} make your move!"
     BOARD.process_player_move(CreatePlayer::SECOND_PLAYER.sign, CreatePlayer::SECOND_PLAYER.make_move)
-    puts BOARD
+  end
+
+  def self.play_game
+    loop do
+      PlayGame.first_player_move
+      break if BOARD.move_board.any? { |arr| arr.any?(Integer) } == false
+
+      PlayGame.second_player_move
+      break if BOARD.move_board.any? { |arr| arr.any?(Integer) } == false
+    end
+    puts 'It\'s a draw!'
   end
 end
 
@@ -119,4 +133,4 @@ puts PlayGame::BOARD
 
 # puts  CreatePlayer::FIRST_PLAYER.sign
 # puts  CreatePlayer::SECOND_PLAYER.sign
-# PlayGame.play_round
+PlayGame.play_game
