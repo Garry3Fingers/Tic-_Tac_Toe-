@@ -3,28 +3,20 @@ class Board
   attr_accessor :move_board
 
   def initialize
-    @board = [[1, '|', 2, '|', 3], [4, '|', 5, '|', 6], [7, '|', 8, '|', 9]]
+    @board = [[1, ' | ', 2, ' | ', 3], [4, ' | ', 5, ' | ', 6], [7, ' | ', 8, ' | ', 9]]
     @move_board = board.map(&:clone)
   end
 
   def to_s
-    "#{board.first.join}\n#{board[1].join}\n#{board.last.join}"
+    " #{move_board.first.join}\n #{move_board[1].join}\n #{move_board.last.join}"
   end
 
   def process_player_move(player_sign, move)
-   # move_board = board.map(&:clone)
-
     move_board.map! do |arr|
-      if arr.include?(move)
-        index = arr.find_index(move)
-        arr[index] = player_sign
-        arr
-      else
-        arr
-      end
+      index = arr.find_index(move)
+      arr[index] = player_sign if arr.include?(move)
+      arr
     end
-
-    puts "#{move_board.first.join}\n#{move_board[1].join}\n#{move_board.last.join}"
   end
 end
 
@@ -61,8 +53,10 @@ module PlayGame
   def self.play_round
     puts "#{CreatePlayer::FIRST_PLAYER.name} make your move!"
     BOARD.process_player_move(CreatePlayer::FIRST_PLAYER.sign, CreatePlayer::FIRST_PLAYER.make_move)
+    puts BOARD
     puts "#{CreatePlayer::SECOND_PLAYER.name} make your move!"
     BOARD.process_player_move(CreatePlayer::SECOND_PLAYER.sign, CreatePlayer::SECOND_PLAYER.make_move)
+    puts BOARD
   end
 end
 
@@ -125,4 +119,4 @@ puts PlayGame::BOARD
 
 # puts  CreatePlayer::FIRST_PLAYER.sign
 # puts  CreatePlayer::SECOND_PLAYER.sign
-PlayGame.play_round
+# PlayGame.play_round
