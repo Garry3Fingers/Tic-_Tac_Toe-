@@ -63,18 +63,48 @@ module PlayGame
   end
 
   def self.check_left_moves
-    BOARD.move_board.any? { |arr| arr.any?(Integer) } == false
+    return unless BOARD.move_board.any? { |arr| arr.any?(Integer) } == false
+
+    puts 'It\'s a draw!'
+    true
+  end
+
+  def self.first_player_won
+    "Congratulations! #{CreatePlayer::FIRST_PLAYER.name} won the game!"
+  end
+
+  def self.second_player_won
+    "Congratulations! #{CreatePlayer::SECOND_PLAYER.name} won the game!"
+  end
+
+  def self.board_for_check(board)
+    board.map do |arr|
+      arr.reject { |element| element == ' | ' }
+    end
+  end
+
+  def self.check_row(check_board)
+    check_board.any? do |arr|
+      if arr.all?(CreatePlayer::FIRST_PLAYER.sign)
+        puts PlayGame.first_player_won
+        return true
+      elsif arr.all?(CreatePlayer::SECOND_PLAYER.sign)
+        puts PlayGame.second_player_won
+        return true
+      end
+    end
   end
 
   def self.play_game
     loop do
       PlayGame.first_player_move
+      break if PlayGame.check_row(PlayGame.board_for_check(BOARD.move_board))
       break if PlayGame.check_left_moves
 
       PlayGame.second_player_move
+      break if PlayGame.check_row(PlayGame.board_for_check(BOARD.move_board))
       break if PlayGame.check_left_moves
     end
-    puts 'It\'s a draw!'
   end
 end
 
@@ -135,6 +165,4 @@ puts  CreatePlayer::SECOND_PLAYER
 
 puts PlayGame::BOARD
 
-# puts  CreatePlayer::FIRST_PLAYER.sign
-# puts  CreatePlayer::SECOND_PLAYER.sign
 PlayGame.play_game
