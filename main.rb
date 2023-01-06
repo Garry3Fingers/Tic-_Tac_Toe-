@@ -95,14 +95,52 @@ module PlayGame
     end
   end
 
+  def self.first_column(check_board)
+    column_arr = []
+    column_arr.push(check_board[0][0], check_board[1][0], check_board[2][0])
+  end
+
+  def self.second_column(check_board)
+    column_arr = []
+    column_arr.push(check_board[0][1], check_board[1][1], check_board[2][1])
+  end
+
+  def self.third_column(check_board)
+    column_arr = []
+    column_arr.push(check_board[0][2], check_board[1][2], check_board[2][2])
+  end
+
+  def self.check_column(first_column, second_column, third_column)
+    column_arr = [first_column, second_column, third_column]
+    column_arr.any? do |arr|
+      if arr.all?(CreatePlayer::FIRST_PLAYER.sign)
+        puts PlayGame.first_player_won
+        return true
+      elsif arr.all?(CreatePlayer::SECOND_PLAYER.sign)
+        puts PlayGame.second_player_won
+        return true
+      end
+    end
+  end
+
   def self.play_game
     loop do
       PlayGame.first_player_move
       break if PlayGame.check_row(PlayGame.board_for_check(BOARD.move_board))
+      break if PlayGame.check_column(
+        PlayGame.first_column(PlayGame.board_for_check(BOARD.move_board)),
+        PlayGame.second_column(PlayGame.board_for_check(BOARD.move_board)),
+        PlayGame.third_column(PlayGame.board_for_check(BOARD.move_board))
+      )
       break if PlayGame.check_left_moves
 
       PlayGame.second_player_move
       break if PlayGame.check_row(PlayGame.board_for_check(BOARD.move_board))
+      break if PlayGame.check_column(
+        PlayGame.first_column(PlayGame.board_for_check(BOARD.move_board)),
+        PlayGame.second_column(PlayGame.board_for_check(BOARD.move_board)),
+        PlayGame.third_column(PlayGame.board_for_check(BOARD.move_board))
+      )
       break if PlayGame.check_left_moves
     end
   end
