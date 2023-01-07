@@ -123,6 +123,29 @@ module PlayGame
     end
   end
 
+  def self.left_diagonal(check_board)
+    diagonal_arr = []
+    diagonal_arr.push(check_board[0][0], check_board[1][1], check_board[2][2])
+  end
+
+  def self.right_diagonal(check_board)
+    diagonal_arr = []
+    diagonal_arr.push(check_board[0][2], check_board[1][1], check_board[2][0])
+  end
+
+  def self.check_diagonal(left_diagonal, right_diagonal)
+    diagonal_arr = [left_diagonal, right_diagonal]
+    diagonal_arr.any? do |arr|
+      if arr.all?(CreatePlayer::FIRST_PLAYER.sign)
+        puts PlayGame.first_player_won
+        return true
+      elsif arr.all?(CreatePlayer::SECOND_PLAYER.sign)
+        puts PlayGame.second_player_won
+        return true
+      end
+    end
+  end
+
   def self.play_game
     loop do
       PlayGame.first_player_move
@@ -132,6 +155,10 @@ module PlayGame
         PlayGame.second_column(PlayGame.board_for_check(BOARD.move_board)),
         PlayGame.third_column(PlayGame.board_for_check(BOARD.move_board))
       )
+      break if PlayGame.check_diagonal(
+        PlayGame.left_diagonal(PlayGame.board_for_check(BOARD.move_board)),
+        PlayGame.right_diagonal(PlayGame.board_for_check(BOARD.move_board))
+      )
       break if PlayGame.check_left_moves
 
       PlayGame.second_player_move
@@ -140,6 +167,10 @@ module PlayGame
         PlayGame.first_column(PlayGame.board_for_check(BOARD.move_board)),
         PlayGame.second_column(PlayGame.board_for_check(BOARD.move_board)),
         PlayGame.third_column(PlayGame.board_for_check(BOARD.move_board))
+      )
+      break if PlayGame.check_diagonal(
+        PlayGame.left_diagonal(PlayGame.board_for_check(BOARD.move_board)),
+        PlayGame.right_diagonal(PlayGame.board_for_check(BOARD.move_board))
       )
       break if PlayGame.check_left_moves
     end
