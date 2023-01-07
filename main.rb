@@ -146,32 +146,45 @@ module PlayGame
     end
   end
 
+  def self.winner_column
+    return unless PlayGame.check_column(
+      PlayGame.first_column(PlayGame.board_for_check(BOARD.move_board)),
+      PlayGame.second_column(PlayGame.board_for_check(BOARD.move_board)),
+      PlayGame.third_column(PlayGame.board_for_check(BOARD.move_board))
+    )
+
+    true
+  end
+
+  def self.winner_diagonal
+    return unless PlayGame.check_diagonal(
+      PlayGame.left_diagonal(PlayGame.board_for_check(BOARD.move_board)),
+      PlayGame.right_diagonal(PlayGame.board_for_check(BOARD.move_board))
+    )
+
+    true
+  end
+
+  def self.winner_row
+    return unless PlayGame.check_row(PlayGame.board_for_check(BOARD.move_board))
+
+    true
+  end
+
+  def self.winner_check
+    return unless PlayGame.winner_row || PlayGame.winner_column || PlayGame.winner_diagonal
+
+    true
+  end
+
   def self.play_game
     loop do
       PlayGame.first_player_move
-      break if PlayGame.check_row(PlayGame.board_for_check(BOARD.move_board))
-      break if PlayGame.check_column(
-        PlayGame.first_column(PlayGame.board_for_check(BOARD.move_board)),
-        PlayGame.second_column(PlayGame.board_for_check(BOARD.move_board)),
-        PlayGame.third_column(PlayGame.board_for_check(BOARD.move_board))
-      )
-      break if PlayGame.check_diagonal(
-        PlayGame.left_diagonal(PlayGame.board_for_check(BOARD.move_board)),
-        PlayGame.right_diagonal(PlayGame.board_for_check(BOARD.move_board))
-      )
+      break if PlayGame.winner_check
       break if PlayGame.check_left_moves
 
       PlayGame.second_player_move
-      break if PlayGame.check_row(PlayGame.board_for_check(BOARD.move_board))
-      break if PlayGame.check_column(
-        PlayGame.first_column(PlayGame.board_for_check(BOARD.move_board)),
-        PlayGame.second_column(PlayGame.board_for_check(BOARD.move_board)),
-        PlayGame.third_column(PlayGame.board_for_check(BOARD.move_board))
-      )
-      break if PlayGame.check_diagonal(
-        PlayGame.left_diagonal(PlayGame.board_for_check(BOARD.move_board)),
-        PlayGame.right_diagonal(PlayGame.board_for_check(BOARD.move_board))
-      )
+      break if PlayGame.winner_check
       break if PlayGame.check_left_moves
     end
   end
