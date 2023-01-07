@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Class shows state of game board
 class Board
   attr_reader :board
   attr_accessor :move_board
@@ -21,6 +24,7 @@ class Board
   end
 end
 
+# Class shows state of player
 class Player
   attr_reader :name, :sign
 
