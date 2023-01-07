@@ -14,6 +14,12 @@ class Board
     " #{move_board.first.join}\n #{move_board[1].join}\n #{move_board.last.join}"
   end
 
+  def board_for_check
+    @move_board.map do |arr|
+      arr.reject { |element| element == ' | ' }
+    end
+  end
+
   def process_player_move(player_sign, move)
     move_board.map! do |arr|
       index = arr.find_index(move)
@@ -81,14 +87,8 @@ module PlayGame
     "Congratulations! #{CreatePlayer::SECOND_PLAYER.name} won the game!"
   end
 
-  def self.board_for_check(board)
-    board.map do |arr|
-      arr.reject { |element| element == ' | ' }
-    end
-  end
-
-  def self.check_row(check_board)
-    check_board.any? do |arr|
+  def self.check_row
+    BOARD.board_for_check.any? do |arr|
       if arr.all?(CreatePlayer::FIRST_PLAYER.sign)
         puts PlayGame.first_player_won
         return true
@@ -99,19 +99,16 @@ module PlayGame
     end
   end
 
-  def self.first_column(check_board)
-    column_arr = []
-    column_arr.push(check_board[0][0], check_board[1][0], check_board[2][0])
+  def self.first_column
+    [].push(BOARD.board_for_check[0][0], BOARD.board_for_check[1][0], BOARD.board_for_check[2][0])
   end
 
-  def self.second_column(check_board)
-    column_arr = []
-    column_arr.push(check_board[0][1], check_board[1][1], check_board[2][1])
+  def self.second_column
+    [].push(BOARD.board_for_check[0][1], BOARD.board_for_check[1][1], BOARD.board_for_check[2][1])
   end
 
-  def self.third_column(check_board)
-    column_arr = []
-    column_arr.push(check_board[0][2], check_board[1][2], check_board[2][2])
+  def self.third_column
+    [].push(BOARD.board_for_check[0][2], BOARD.board_for_check[1][2], BOARD.board_for_check[2][2])
   end
 
   def self.check_column(first_column, second_column, third_column)
@@ -127,14 +124,12 @@ module PlayGame
     end
   end
 
-  def self.left_diagonal(check_board)
-    diagonal_arr = []
-    diagonal_arr.push(check_board[0][0], check_board[1][1], check_board[2][2])
+  def self.left_diagonal
+    [].push(BOARD.board_for_check[0][0], BOARD.board_for_check[1][1], BOARD.board_for_check[2][2])
   end
 
-  def self.right_diagonal(check_board)
-    diagonal_arr = []
-    diagonal_arr.push(check_board[0][2], check_board[1][1], check_board[2][0])
+  def self.right_diagonal
+    [].push(BOARD.board_for_check[0][2], BOARD.board_for_check[1][1], BOARD.board_for_check[2][0])
   end
 
   def self.check_diagonal(left_diagonal, right_diagonal)
@@ -151,26 +146,19 @@ module PlayGame
   end
 
   def self.winner_column
-    return unless PlayGame.check_column(
-      PlayGame.first_column(PlayGame.board_for_check(BOARD.move_board)),
-      PlayGame.second_column(PlayGame.board_for_check(BOARD.move_board)),
-      PlayGame.third_column(PlayGame.board_for_check(BOARD.move_board))
-    )
+    return unless PlayGame.check_column(PlayGame.first_column, PlayGame.second_column, PlayGame.third_column)
 
     true
   end
 
   def self.winner_diagonal
-    return unless PlayGame.check_diagonal(
-      PlayGame.left_diagonal(PlayGame.board_for_check(BOARD.move_board)),
-      PlayGame.right_diagonal(PlayGame.board_for_check(BOARD.move_board))
-    )
+    return unless PlayGame.check_diagonal(PlayGame.left_diagonal, PlayGame.right_diagonal)
 
     true
   end
 
   def self.winner_row
-    return unless PlayGame.check_row(PlayGame.board_for_check(BOARD.move_board))
+    return unless PlayGame.check_row
 
     true
   end
