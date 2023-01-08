@@ -129,7 +129,17 @@ module PlayGame
     true
   end
 
+  def self.play_again
+    puts 'Do you want to play again?(yes or anything)'
+    answer = gets.chomp
+    return unless answer.downcase == 'yes'
+
+    BOARD.move_board = BOARD.board.map(&:clone)
+    PlayGame.play_game
+  end
+
   def self.play_game
+    puts BOARD
     loop do
       PlayGame.first_player_move
       break if PlayGame.winner_check
@@ -137,6 +147,7 @@ module PlayGame
       PlayGame.second_player_move
       break if PlayGame.winner_check
     end
+    PlayGame.play_again
   end
 end
 
@@ -193,8 +204,7 @@ module CreatePlayer
 end
 
 puts  CreatePlayer::FIRST_PLAYER
-puts  CreatePlayer::SECOND_PLAYER
 
-puts PlayGame::BOARD
+puts  CreatePlayer::SECOND_PLAYER
 
 PlayGame.play_game
