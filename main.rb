@@ -58,7 +58,7 @@ end
 
 class InvalidInput < StandardError; end
 
-# This module implements game rounds
+# This module implements game rounds and winner check
 module PlayGame
   BOARD = Board.new
 
@@ -87,18 +87,6 @@ module PlayGame
     "Congratulations! #{CreatePlayer::SECOND_PLAYER.name} won the game!"
   end
 
-  def self.check_row
-    BOARD.board_for_check.any? do |arr|
-      if arr.all?(CreatePlayer::FIRST_PLAYER.sign)
-        puts PlayGame.first_player_won
-        return true
-      elsif arr.all?(CreatePlayer::SECOND_PLAYER.sign)
-        puts PlayGame.second_player_won
-        return true
-      end
-    end
-  end
-
   def self.first_column
     [].push(BOARD.board_for_check[0][0], BOARD.board_for_check[1][0], BOARD.board_for_check[2][0])
   end
@@ -111,19 +99,6 @@ module PlayGame
     [].push(BOARD.board_for_check[0][2], BOARD.board_for_check[1][2], BOARD.board_for_check[2][2])
   end
 
-  def self.check_column(first_column, second_column, third_column)
-    column_arr = [first_column, second_column, third_column]
-    column_arr.any? do |arr|
-      if arr.all?(CreatePlayer::FIRST_PLAYER.sign)
-        puts PlayGame.first_player_won
-        return true
-      elsif arr.all?(CreatePlayer::SECOND_PLAYER.sign)
-        puts PlayGame.second_player_won
-        return true
-      end
-    end
-  end
-
   def self.left_diagonal
     [].push(BOARD.board_for_check[0][0], BOARD.board_for_check[1][1], BOARD.board_for_check[2][2])
   end
@@ -132,9 +107,9 @@ module PlayGame
     [].push(BOARD.board_for_check[0][2], BOARD.board_for_check[1][1], BOARD.board_for_check[2][0])
   end
 
-  def self.check_diagonal(left_diagonal, right_diagonal)
-    diagonal_arr = [left_diagonal, right_diagonal]
-    diagonal_arr.any? do |arr|
+  def self.check_arr(first_column, second_column, third_column, left_diagonal, right_diagonal)
+    check_arr = BOARD.board_for_check.push(first_column, second_column, third_column, left_diagonal, right_diagonal)
+    check_arr.any? do |arr|
       if arr.all?(CreatePlayer::FIRST_PLAYER.sign)
         puts PlayGame.first_player_won
         return true
@@ -145,26 +120,11 @@ module PlayGame
     end
   end
 
-  def self.winner_column
-    return unless PlayGame.check_column(PlayGame.first_column, PlayGame.second_column, PlayGame.third_column)
-
-    true
-  end
-
-  def self.winner_diagonal
-    return unless PlayGame.check_diagonal(PlayGame.left_diagonal, PlayGame.right_diagonal)
-
-    true
-  end
-
-  def self.winner_row
-    return unless PlayGame.check_row
-
-    true
-  end
-
   def self.winner_check
-    return unless PlayGame.winner_row || PlayGame.winner_column || PlayGame.winner_diagonal
+    return unless PlayGame.check_arr(
+      PlayGame.first_column, PlayGame.second_column, PlayGame.third_column, PlayGame.left_diagonal,
+      PlayGame.right_diagonal
+    ) || PlayGame.check_left_moves
 
     true
   end
@@ -173,11 +133,9 @@ module PlayGame
     loop do
       PlayGame.first_player_move
       break if PlayGame.winner_check
-      break if PlayGame.check_left_moves
 
       PlayGame.second_player_move
       break if PlayGame.winner_check
-      break if PlayGame.check_left_moves
     end
   end
 end
