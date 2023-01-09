@@ -111,20 +111,18 @@ module PlayGame
     check_arr = BOARD.board_for_check.push(first_column, second_column, third_column, left_diagonal, right_diagonal)
     check_arr.any? do |arr|
       if arr.all?(CreatePlayer::FIRST_PLAYER.sign)
-        puts PlayGame.first_player_won
+        puts first_player_won
         return true
       elsif arr.all?(CreatePlayer::SECOND_PLAYER.sign)
-        puts PlayGame.second_player_won
+        puts second_player_won
         return true
       end
     end
   end
 
   def self.winner_check
-    return unless PlayGame.check_arr(
-      PlayGame.first_column, PlayGame.second_column, PlayGame.third_column, PlayGame.left_diagonal,
-      PlayGame.right_diagonal
-    ) || PlayGame.check_left_moves
+    return unless check_arr(first_column, second_column, third_column, left_diagonal, right_diagonal)\
+    || check_left_moves
 
     true
   end
@@ -135,19 +133,19 @@ module PlayGame
     return unless answer.downcase == 'yes'
 
     BOARD.move_board = BOARD.board.map(&:clone)
-    PlayGame.play_game
+    play_game
   end
 
   def self.play_game
     puts BOARD
     loop do
-      PlayGame.first_player_move
-      break if PlayGame.winner_check
+      first_player_move
+      break if winner_check
 
-      PlayGame.second_player_move
-      break if PlayGame.winner_check
+      second_player_move
+      break if winner_check
     end
-    PlayGame.play_again
+    play_again
   end
 end
 
@@ -158,7 +156,7 @@ module CreatePlayer
   end
 
   def self.set_sign
-    sign = CreatePlayer.input
+    sign = input
     if defined?(FIRST_PLAYER) == 'constant' && FIRST_PLAYER.sign == sign || sign.match?(/[[:digit:]]/)\
       || sign.length > 1 || sign.match?(/\W+/)
       raise InvalidInput, 'Invalid input. Use a different letter!'
@@ -188,19 +186,19 @@ module CreatePlayer
   end
 
   def self.create_player
-    puts CreatePlayer.ask_name
+    puts ask_name
 
-    name = CreatePlayer.input
+    name = input
 
-    puts CreatePlayer.ask_sign
+    puts ask_sign
 
-    sign = CreatePlayer.set_sign
+    sign = set_sign
 
     Player.new(name, sign)
   end
 
-  FIRST_PLAYER = CreatePlayer.create_player
-  SECOND_PLAYER = CreatePlayer.create_player
+  FIRST_PLAYER = create_player
+  SECOND_PLAYER = create_player
 end
 
 puts  CreatePlayer::FIRST_PLAYER
