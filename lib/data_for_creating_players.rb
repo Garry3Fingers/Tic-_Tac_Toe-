@@ -14,7 +14,7 @@ class DataForCreatingPlayers
       data = ask_data
       player = ''
       player = first_player if first_player.empty?
-      player = second_player unless first_player.empty
+      player = second_player unless first_player.empty?
       player[:name] = data[:name]
       player[:sign] = data[:sign]
     end
