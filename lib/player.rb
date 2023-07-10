@@ -13,9 +13,9 @@ class Player
     "Player: #{name}, sign: #{sign}."
   end
 
-  def make_move
+  def make_move(board)
     input = gets.chomp
-    unless input.match?(/[[:digit:]]/) && PlayGame::BOARD.move_board.any? { |arr| arr.include?(input.to_i) } == true
+    unless input.match?(/[[:digit:]]/) && board.move_board.any? { |arr| arr.include?(input.to_i) } == true
       raise InvalidInput, 'Invalid input. Use a different number!'
     end
   rescue InvalidInput => e
