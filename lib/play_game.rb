@@ -34,7 +34,7 @@ class PlayGame
   end
 
   def check_left_moves
-    return unless board.move_board.any? { |arr| arr.any?(Integer) } == false
+    return unless board.board.any? { |arr| arr.any?(Integer) } == false
 
     puts 'It\'s a draw!'
     true
