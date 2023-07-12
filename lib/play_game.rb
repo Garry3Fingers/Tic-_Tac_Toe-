@@ -19,7 +19,6 @@ class PlayGame
       second_player_move
       break if winner_check
     end
-    play_again
   end
 
   private
@@ -87,14 +86,5 @@ class PlayGame
     || check_left_moves
 
     true
-  end
-
-  def play_again
-    puts 'Do you want to play again?(yes or anything)'
-    answer = gets.chomp
-    return unless answer.downcase == 'yes'
-
-    board.move_board = board.board.map(&:clone)
-    play_game
   end
 end
