@@ -15,7 +15,7 @@ class Board
   end
 
   def board_for_check
-    @move_board.map do |arr|
+    move_board.map do |arr|
       arr.reject { |element| element == ' | ' }
     end
   end
