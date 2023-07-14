@@ -4,6 +4,7 @@ require './lib/board'
 require './lib/player'
 require './lib/data_for_creating_players'
 require './lib/play_game'
+require './lib/winner_check'
 
 # This module is responsible for creating and running the game
 module StartingGame
