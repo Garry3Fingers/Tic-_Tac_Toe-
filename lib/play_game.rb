@@ -14,23 +14,67 @@ class PlayGame
     puts game_board
     loop do
       first_player_move
-      break if WinnerCheckWrapper.winner_check(args)
+      break if winner_check
 
       second_player_move
-      break if WinnerCheckWrapper.winner_check(args)
+      break if winner_check
     end
   end
 
   private
 
   def first_player_move
-    puts "#{first_player.name} make your move!"
-    game_board.process_player_move(first_player.sign, first_player.make_move(game_board))
+    puts "#{player_name { first_player_name }} make your move!"
+    player_make_move(player_sign { first_player_sign }, player_input { second_player_input })
   end
 
   def second_player_move
-    puts "#{second_player.name} make your move!"
-    game_board.process_player_move(second_player.sign, second_player.make_move(game_board))
+    puts "#{player_name { second_player_name }} make your move!"
+    player_make_move(player_sign { second_player_sign }, player_input { second_player_input })
+  end
+
+  def player_make_move(player_sign, player_input)
+    game_board.process_player_move(player_sign, player_input)
+  end
+
+  def player_input
+    yield
+  end
+
+  def first_player_input
+    first_player.player_input(game_board)
+  end
+
+  def second_player_input
+    second_player.player_input(game_board)
+  end
+
+  def player_name
+    yield
+  end
+
+  def first_player_name
+    first_player.name
+  end
+
+  def second_player_name
+    second_player.name
+  end
+
+  def player_sign
+    yield
+  end
+
+  def first_player_sign
+    first_player.sign
+  end
+
+  def second_player_sign
+    second_player.sign
+  end
+
+  def winner_check
+    WinnerCheckWrapper.winner_check(args)
   end
 
   def args
