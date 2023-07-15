@@ -10,13 +10,13 @@ class Player
   end
 
   def to_s
-    "Player: #{name}, sign: #{sign}."
+    "Name: #{name}, sign: #{sign}."
   end
 
   def player_input(game_board)
     input = gets.chomp
     unless input.match?(/[[:digit:]]/) && game_board.board.any? { |arr| arr.include?(input.to_i) } == true
-      raise InvalidInput, 'Invalid input. Use a different number!'
+      raise InvalidInput, "\nInvalid input. Use a different number!"
     end
   rescue InvalidInput => e
     puts e

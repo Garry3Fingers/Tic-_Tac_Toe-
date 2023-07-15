@@ -24,6 +24,6 @@ class Board
       arr[index] = player_sign if arr.include?(move)
       arr
     end
-    puts self
+    puts "\n#{self}"
   end
 end

@@ -20,7 +20,7 @@ module StartingGame
   end
 
   def self.new_game
-    puts 'Do you start a new game?(yes or anything)'
+    puts "\nDo you start a new game?(yes or anything)"
     answer = gets.chomp
     return unless answer.downcase == 'yes'
 

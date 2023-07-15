@@ -11,7 +11,7 @@ class PlayGame
   end
 
   def play_game
-    puts game_board
+    start_information
     loop do
       first_player_move
       break if winner_check
@@ -24,12 +24,12 @@ class PlayGame
   private
 
   def first_player_move
-    puts "#{player_name { first_player_name }} make your move!"
+    puts "\n#{player_name { first_player_name }} make your move!"
     player_make_move(player_sign { first_player_sign }, player_input { second_player_input })
   end
 
   def second_player_move
-    puts "#{player_name { second_player_name }} make your move!"
+    puts "\n#{player_name { second_player_name }} make your move!"
     player_make_move(player_sign { second_player_sign }, player_input { second_player_input })
   end
 
@@ -85,5 +85,11 @@ class PlayGame
       first_sign: first_player.sign,
       second_sign: second_player.sign
     }
+  end
+
+  def start_information
+    puts "\nGame board:\n\n#{game_board}"
+    puts "\nFirst player: #{first_player}"
+    puts "\nSecond player: #{second_player}"
   end
 end

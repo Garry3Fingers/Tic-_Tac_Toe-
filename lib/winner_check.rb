@@ -24,16 +24,16 @@ class WinnerCheck
   def check_left_moves
     return unless game_board.board.any? { |arr| arr.any?(Integer) } == false
 
-    puts 'It\'s a draw!'
+    puts "\nIt's a draw!"
     true
   end
 
   def first_player_won
-    "Congratulations! #{first_player_name} won the game!"
+    "\nCongratulations! #{first_player_name} won the game!"
   end
 
   def second_player_won
-    "Congratulations! #{second_player_name} won the game!"
+    "\nCongratulations! #{second_player_name} won the game!"
   end
 
   def first_column

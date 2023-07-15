@@ -42,17 +42,17 @@ class DataForCreatingPlayers
 
   def ask_name
     if first_player.empty?
-      'Enter the first player name'
+      "\nEnter the first player name"
     else
-      'Enter the second player name'
+      "\nEnter the second player name"
     end
   end
 
   def ask_sign
     if first_player.empty?
-      'Enter a letter for the first player\'s sign'
+      "\nEnter a letter for the first player's sign"
     else
-      "Enter a letter for the second player\'s sign\n"\
+      "\nEnter a letter for the second player's sign\n"\
       "It mustn't be #{first_player[:sign]}"
     end
   end
@@ -61,7 +61,7 @@ class DataForCreatingPlayers
     sign = user_input
     if first_player[:sign] == sign || sign.match?(/[[:digit:]]/)\
       || sign.length > 1 || sign.match?(/\W+/)
-      raise InvalidInput, 'Invalid input. Use a different letter!'
+      raise InvalidInput, "\nInvalid input. Use a different letter!"
     end
   rescue InvalidInput => e
     puts e
