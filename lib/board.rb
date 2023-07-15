@@ -12,12 +12,6 @@ class Board
     " #{board.first.join}\n #{board[1].join}\n #{board.last.join}"
   end
 
-  def board_for_check
-    board.map do |arr|
-      arr.reject { |element| element == ' | ' }
-    end
-  end
-
   def process_player_move(player_sign, move)
     board.map! do |arr|
       index = arr.find_index(move)

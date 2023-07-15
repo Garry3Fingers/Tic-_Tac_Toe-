@@ -79,7 +79,7 @@ class PlayGame
 
   def args
     {
-      board: game_board,
+      board: game_board.board,
       first_name: first_player.name,
       second_name: second_player.name,
       first_sign: first_player.sign,

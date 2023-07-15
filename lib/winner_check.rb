@@ -13,8 +13,7 @@ class WinnerCheck
   end
 
   def check
-    return unless check_arr(first_column, second_column, third_column, left_diagonal, right_diagonal)\
-    || check_left_moves
+    return unless check_arr || check_left_moves
 
     true
   end
@@ -22,7 +21,7 @@ class WinnerCheck
   private
 
   def check_left_moves
-    return unless game_board.board.any? { |arr| arr.any?(Integer) } == false
+    return unless game_board.any? { |arr| arr.any?(Integer) } == false
 
     puts "\nIt's a draw!"
     true
@@ -37,27 +36,33 @@ class WinnerCheck
   end
 
   def first_column
-    [].push(game_board.board_for_check[0][0], game_board.board_for_check[1][0], game_board.board_for_check[2][0])
+    [].push(board_for_check[0][0], board_for_check[1][0], board_for_check[2][0])
   end
 
   def second_column
-    [].push(game_board.board_for_check[0][1], game_board.board_for_check[1][1], game_board.board_for_check[2][1])
+    [].push(board_for_check[0][1], board_for_check[1][1], board_for_check[2][1])
   end
 
   def third_column
-    [].push(game_board.board_for_check[0][2], game_board.board_for_check[1][2], game_board.board_for_check[2][2])
+    [].push(board_for_check[0][2], board_for_check[1][2], board_for_check[2][2])
   end
 
   def left_diagonal
-    [].push(game_board.board_for_check[0][0], game_board.board_for_check[1][1], game_board.board_for_check[2][2])
+    [].push(board_for_check[0][0], board_for_check[1][1], board_for_check[2][2])
   end
 
   def right_diagonal
-    [].push(game_board.board_for_check[0][2], game_board.board_for_check[1][1], game_board.board_for_check[2][0])
+    [].push(board_for_check[0][2], board_for_check[1][1], board_for_check[2][0])
   end
 
-  def check_arr(first_column, second_column, third_column, left_diagonal, right_diagonal)
-    arrays = game_board.board_for_check.push(first_column, second_column, third_column, left_diagonal, right_diagonal)
+  def board_for_check
+    game_board.map do |arr|
+      arr.reject { |element| element == ' | ' }
+    end
+  end
+
+  def check_arr(arrays = [])
+    arrays.push(first_column, second_column, third_column, left_diagonal, right_diagonal)
     arrays.any? do |arr|
       if arr.all?(first_player_sign)
         puts first_player_won
