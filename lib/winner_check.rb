@@ -61,8 +61,8 @@ class WinnerCheck
     end
   end
 
-  def check_arr(arrays = [])
-    arrays.push(first_column, second_column, third_column, left_diagonal, right_diagonal)
+  def check_arr
+    arrays = board_for_check.push(first_column, second_column, third_column, left_diagonal, right_diagonal)
     arrays.any? do |arr|
       if arr.all?(first_player_sign)
         puts first_player_won
