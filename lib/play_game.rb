@@ -42,11 +42,11 @@ class PlayGame
   end
 
   def first_player_input
-    first_player.player_input(game_board)
+    first_player.player_input(game_board.board)
   end
 
   def second_player_input
-    second_player.player_input(game_board)
+    second_player.player_input(game_board.board)
   end
 
   def player_name
