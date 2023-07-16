@@ -10,3 +10,6 @@
 # See https://docs.rubocop.org/rubocop/configuration
 AllCops:
   TargetRubyVersion: 3.2.2
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/*'
