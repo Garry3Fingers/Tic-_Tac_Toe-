@@ -31,3 +31,28 @@ describe WinnerCheck do
     end
   end
 end
+
+describe WinnerCheckWrapper do
+  it 'returns true' do
+    args = {
+      first_sign: 'V',
+      second_sign: 'N',
+      board: [%w[V V V], [2, 2, 2], [3, 3, 3]],
+      first_name: 'Vlad',
+      second_name: 'Natasha'
+    }
+    expect(WinnerCheckWrapper.winner_check(args)).to be(true)
+  end
+
+  it "doesn't return true" do
+    args = {
+      first_sign: 'V',
+      second_sign: 'N',
+      board: [%w[V N V], [2, 2, 2], [3, 3, 3]],
+      first_name: 'Vlad',
+      second_name: 'Natasha'
+    }
+
+    expect(WinnerCheckWrapper.winner_check(args)).not_to be(true)
+  end
+end
